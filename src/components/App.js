@@ -9,6 +9,7 @@ function App(props) {
   const [isEditAvatarOpen, setIsEditAvatarOpen] = React.useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = React.useState(false);
   const [isAddCardOpen, setIsAddCardOpen] = React.useState(false);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
 
   function handleEditAvatarClick(evt) {
     setIsEditAvatarOpen(true);
@@ -20,6 +21,10 @@ function App(props) {
   
   function handleAddCardClick(evt) {
     setIsAddCardOpen(true);
+  }
+
+  function handleDeleteCardClick(evt) {
+    setIsDeletePopupOpen(true);
   }
 
   function closePopups(evt) {
@@ -36,6 +41,7 @@ function App(props) {
       {handleEditAvatarClick}
       {handleEditProfileClick}
       {handleAddCardClick}
+      {handleDeleteCardClick}
       {closePopups}
       />
       <Footer />

@@ -29,7 +29,7 @@ function Main() {
 
       <PopupWithForm name="add-card" title="New Place" buttonText="Create" isOpen={props.isAddCardOpen} onClose={props.onClose}></PopupWithForm>
 
-      <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" />
+      <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={props.isDeletePopupOpen} onClose={props.onClose}/>
 
       {/* <section className="popup popup_type_edit-avatar">
         <div className="popup__container">
