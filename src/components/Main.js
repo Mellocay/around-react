@@ -1,34 +1,68 @@
-import React from 'react';
-import profilePic from '../images/jc-pic.png';
+import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
+import PopupWithImage from './PopupWithImage';
+import api from '../utils/Api.js';
 
-function Main() {
+function Main(props) {
 
+// set states for Profile Content
+const [userAvatar, setUserAvatar] = React.useState();
+const [userName, setUserName] = React.useState();
+const [userDescription, setUserDescription] = React.useState();
+
+// Call server for Profile Content
+React.useEffect(() => {
+  api.getUserInfo().then((res) => {
+    setUserAvatar(res.avatar);
+    setUserName(res.name);
+    setUserDescription(res.about);
+  })
+  .catch(err => console.log(err));
+});
+
+// set state for Cards
+const [cards, setCards] = React.useState([]);
+// Call server to get initial cards
+React.useEffect(() => {
+  api.getCardList().then((res) => {
+    setCards(res);
+  })
+  .catch(err => console.log(err));
+});
+
+// JSX for Main section
   return (
     <main className="main">
+{/* Profile JSX */}
       <section className="profile">
         <div className="profile__image-section">
-          <img src = {profilePic} className = "profile__image" alt = "profile picture" />
-          <button className="profile__image_edit-button" onClick={handleEditAvatarClick}></button>
+          <img src={userAvatar} className = "profile__image" alt={userName} />
+          <button className="profile__image_edit-button" onClick={props.handleEditAvatarClick}></button>
         </div>
         <div className="profile__info">
-          <h2 className="profile__name"></h2>
-          <p className="profile__occupation"></p>
+          <h2 className="profile__name">{userName}</h2>
+          <p className="profile__occupation">{userDescription}</p>
         </div>
-        <button className="button button__edit" onClick={handleEditProfileClick} aria-label="Edit Profile"></button>
-        <button className="button button__add" aria-label="Add Picture Card" onClick={handleAddPlaceClick}></button>
+        <button className="button button__edit" onClick={props.handleEditProfileClick} aria-label="Edit Profile"></button>
+        <button className="button button__add" aria-label="Add Picture Card" onClick={props.handleAddCardClick}></button>
       </section>
+
+{/* Card JSX */}
       <section className="card">
         <ul className="card__items">
         </ul>
       </section>
 
+{/* Avatar Popup JSX */}
       <PopupWithForm name="edit-avatar" title="Change Profile Picture" buttonText="Save" isOpen={props.isEditAvatarOpen} onClose={props.onClose}></PopupWithForm>
 
+{/* Profile Popup JSX */}
       <PopupWithForm name="edit-profile" title="Edit Profile" buttonText="Save" isOpen={props.isEditProfileOpen} onClose={props.onClose}></PopupWithForm>
 
+{/* Card Popup JSX */}
       <PopupWithForm name="add-card" title="New Place" buttonText="Create" isOpen={props.isAddCardOpen} onClose={props.onClose}></PopupWithForm>
 
+{/* Delete Popup JSX */}
       <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={props.isDeletePopupOpen} onClose={props.onClose}/>
 
       {/* <section className="popup popup_type_edit-avatar">
@@ -77,19 +111,12 @@ function Main() {
           </form>  
         </div>
       </section> */}
-      <section className="popup popup_type_image">
-        <div className="popup__container popup__container_type_image">
-          <button className="button button__close"></button>
-          <figure className="popup__figure">
-            <img className="popup__image" alt="" />
-            <figcaption className="popup__caption"></figcaption>
-          </figure>
-        </div>
-      </section>
     
+      <PopupWithImage />
+
       <template className="card__template">
         <li className="card__item">
-          <button className="button button__remove"></button>
+          <button className="button button__remove" onClick={props.handleDeleteCardClick}></button>
           <div className="card__image">
           </div>
           <div className="card__base">
