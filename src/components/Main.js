@@ -25,10 +25,9 @@ React.useEffect(() => {
 const [cards, setCards] = React.useState([]);
 // Call server to get initial cards
 
-api.getCardList().then((res) => {
-  setCards(res);
-})
-  .catch(err => console.log(err));
+api.getCardList()
+  .then (cards => {setCards(cards)})
+  .catch( err => console.log(err));
 
   // JSX for Main section
   return (
@@ -50,24 +49,16 @@ api.getCardList().then((res) => {
   {/* Card JSX */}
       <section className="card">
         <ul className="card__items">
-          {cards.map((card, index) => {
+          {cards.map((card) => {
             return (
               <Card 
-              key={index}
-              name={card.name}
-              link={card.link} 
-              handleCardClick={() => props.handleCardClick(card.name, card.link)}
-              likes={card.likes}
-              _id={card._id}
-              owner={card.owner}
-              handleDeleteCardClick={props.handleDeleteCardClick(card)}
-              handleCardLikeClick={props.handleCardLikeClick(card)}
-
-            ></Card>
-          )})}
-        </ul>
-      </section>
-      <Card />
+              key={card._id}
+              card={card}
+              onCardClick={() => props.onCardClick(props.card)} />)
+              })}
+            </ul>
+          </section>
+         
   {/* Avatar Popup JSX */}
       <PopupWithForm name="edit-avatar" title="Change Profile Picture" buttonText="Save" isOpen={props.isEditAvatarOpen} onClose={props.onClose}></PopupWithForm>
 

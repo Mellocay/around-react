@@ -24,6 +24,7 @@ function App(props) {
   function handleDeleteCardClick(evt) {
     setIsDeletePopupOpen(true);
   }
+
   function handleClosePopups(evt) {
     if(evt.target === evt.currentTarget)
       setIsEditAvatarOpen(false);
