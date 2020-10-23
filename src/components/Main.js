@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PopupWithForm from './PopupWithForm';
 import PopupWithImage from './PopupWithImage';
 import api from '../utils/Api.js';
+import Card from './Card.js';
 
 function Main(props) {
 
@@ -23,17 +24,16 @@ React.useEffect(() => {
 // set state for Cards
 const [cards, setCards] = React.useState([]);
 // Call server to get initial cards
-React.useEffect(() => {
-  api.getCardList().then((res) => {
-    setCards(res);
-  })
-  .catch(err => console.log(err));
-});
 
-// JSX for Main section
+api.getCardList().then((res) => {
+  setCards(res);
+})
+  .catch(err => console.log(err));
+
+  // JSX for Main section
   return (
     <main className="main">
-{/* Profile JSX */}
+  {/* Profile JSX */}
       <section className="profile">
         <div className="profile__image-section">
           <img src={userAvatar} className = "profile__image" alt={userName} />
@@ -47,22 +47,37 @@ React.useEffect(() => {
         <button className="button button__add" aria-label="Add Picture Card" onClick={props.handleAddCardClick}></button>
       </section>
 
-{/* Card JSX */}
+  {/* Card JSX */}
       <section className="card">
         <ul className="card__items">
+          {cards.map((card, index) => {
+            return (
+              <Card 
+              key={index}
+              name={card.name}
+              link={card.link} 
+              handleCardClick={() => props.handleCardClick(card.name, card.link)}
+              likes={card.likes}
+              _id={card._id}
+              owner={card.owner}
+              handleDeleteCardClick={props.handleDeleteCardClick(card)}
+              handleCardLikeClick={props.handleCardLikeClick(card)}
+
+            ></Card>
+          )})}
         </ul>
       </section>
-
-{/* Avatar Popup JSX */}
+      <Card />
+  {/* Avatar Popup JSX */}
       <PopupWithForm name="edit-avatar" title="Change Profile Picture" buttonText="Save" isOpen={props.isEditAvatarOpen} onClose={props.onClose}></PopupWithForm>
 
-{/* Profile Popup JSX */}
+  {/* Profile Popup JSX */}
       <PopupWithForm name="edit-profile" title="Edit Profile" buttonText="Save" isOpen={props.isEditProfileOpen} onClose={props.onClose}></PopupWithForm>
 
-{/* Card Popup JSX */}
+  {/* Card Popup JSX */}
       <PopupWithForm name="add-card" title="New Place" buttonText="Create" isOpen={props.isAddCardOpen} onClose={props.onClose}></PopupWithForm>
 
-{/* Delete Popup JSX */}
+  {/* Delete Popup JSX */}
       <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={props.isDeletePopupOpen} onClose={props.onClose}/>
 
       {/* <section className="popup popup_type_edit-avatar">
@@ -113,21 +128,6 @@ React.useEffect(() => {
       </section> */}
     
       <PopupWithImage />
-
-      <template className="card__template">
-        <li className="card__item">
-          <button className="button button__remove" onClick={props.handleDeleteCardClick}></button>
-          <div className="card__image">
-          </div>
-          <div className="card__base">
-            <h3 className="card__title"></h3>
-            <div className="card__likes">  
-              <button className="button button__like"></button>
-              <p className="card__like-count"></p>
-            </div>
-          </div>
-        </li>
-      </template>
 
     </main>
   );
