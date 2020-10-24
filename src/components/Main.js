@@ -142,7 +142,7 @@ React.useEffect(() => {
         </div>
       </section> */}
     
-      <PopupWithImage />
+      <PopupWithImage card={props.selectedCard} isOpen={props.isImagePopupOpen}onClose={props.onClose}/>
 
     </main>
   );

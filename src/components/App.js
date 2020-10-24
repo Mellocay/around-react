@@ -10,6 +10,7 @@ function App(props) {
   const [isEditProfileOpen, setIsEditProfileOpen] = React.useState(false);
   const [isAddCardOpen, setIsAddCardOpen] = React.useState(false);
   const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
 
   // handler functions for Popups
   function handleEditAvatarClick(evt) {
@@ -38,6 +39,7 @@ function App(props) {
 // handler function for image popup
 function handleCardClick(card) {
   setSelectedCard(card);
+  setIsImagePopupOpen(true);
 }
 
 // app JSX
@@ -55,7 +57,8 @@ function handleCardClick(card) {
         handleDeleteCardClick={handleDeleteCardClick}
         isDeletePopupOpen={isDeletePopupOpen}
         selectedCard={selectedCard}
-        handleCardClick={handleCardClick}
+        isImagePopupOpen={isImagePopupOpen}
+        handleCardClick={(card)=>{handleCardClick(card)}}
         onClose={handleClosePopups}
       />
 
