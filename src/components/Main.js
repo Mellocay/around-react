@@ -95,6 +95,9 @@ React.useEffect(() => {
   {/* Delete Popup JSX */}
       <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={props.isDeletePopupOpen} onClose={props.onClose}/>
 
+{/* Image Popup JSX */}
+      <PopupWithImage link={props.selectedLink} title={props.selectedTitle} isOpen={props.isImagePopupOpen} onClose={props.onClose}/>
+
       {/* <section className="popup popup_type_edit-avatar">
         <div className="popup__container">
           <button className="button button__close"></button>
@@ -141,8 +144,6 @@ React.useEffect(() => {
           </form>  
         </div>
       </section> */}
-    
-      <PopupWithImage card={props.selectedCard} isOpen={props.isImagePopupOpen}onClose={props.onClose}/>
 
     </main>
   );

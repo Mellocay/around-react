@@ -27,18 +27,21 @@ function App(props) {
   }
 
   function handleClosePopups(evt) {
-    if(evt.target === evt.currentTarget) return
+    if(evt.target != evt.currentTarget) return
       setIsEditAvatarOpen(false);
       setIsEditProfileOpen(false);
       setIsAddCardOpen(false);
       setIsDeletePopupOpen(false);
+      setIsImagePopupOpen(false);
   }
 // set image popup state
-  const [selectedCard, setSelectedCard] = React.useState('');
+const [selectedLink, setSelectedLink] = React.useState('');
+const [selectedTitle, setSelectedTitle] = React.useState('');
 
 // handler function for image popup
-function handleCardClick(card) {
-  setSelectedCard(card);
+function handleCardClick(link, title) {
+  setSelectedLink(link);
+  setSelectedTitle(title);
   setIsImagePopupOpen(true);
 }
 
@@ -56,7 +59,8 @@ function handleCardClick(card) {
         isAddCardOpen={isAddCardOpen}
         handleDeleteCardClick={handleDeleteCardClick}
         isDeletePopupOpen={isDeletePopupOpen}
-        selectedCard={selectedCard}
+        selectedLink={selectedLink}
+        selectedTitle={selectedTitle}
         isImagePopupOpen={isImagePopupOpen}
         handleCardClick={(card)=>{handleCardClick(card)}}
         onClose={handleClosePopups}
