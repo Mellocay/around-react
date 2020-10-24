@@ -5,7 +5,7 @@ import Footer from './Footer.js';
 
 function App(props) {
 
-// set states for Popups
+  // set states for Popups
   const [isEditAvatarOpen, setIsEditAvatarOpen] = React.useState(false);
   const [isEditProfileOpen, setIsEditProfileOpen] = React.useState(false);
   const [isAddCardOpen, setIsAddCardOpen] = React.useState(false);
@@ -26,28 +26,39 @@ function App(props) {
   }
 
   function handleClosePopups(evt) {
-    if(evt.target === evt.currentTarget)
+    if(evt.target === evt.currentTarget) return
       setIsEditAvatarOpen(false);
       setIsEditProfileOpen(false);
       setIsAddCardOpen(false);
       setIsDeletePopupOpen(false);
   }
+// set image popup state
+  const [selectedCard, setSelectedCard] = React.useState('');
 
+// handler function for image popup
+function handleCardClick(card) {
+  setSelectedCard(card);
+}
+
+// app JSX
   return (
     <div className="root">
       <Header />
       <Main 
 // Prop values passed to Main.js
-      handleEditAvatarClick={handleEditAvatarClick}
-      isEditAvatarOpen={isEditAvatarOpen}
-      handleEditProfileClick={handleEditProfileClick}
-      isEditProfileOpen={isEditProfileOpen}
-      handleAddCardClick={handleAddCardClick}
-      isAddCardOpen={isAddCardOpen}
-      handleDeleteCardClick={handleDeleteCardClick}
-      isDeletePopupOpen={isDeletePopupOpen}
-      onClose={handleClosePopups}
+        handleEditAvatarClick={handleEditAvatarClick}
+        isEditAvatarOpen={isEditAvatarOpen}
+        handleEditProfileClick={handleEditProfileClick}
+        isEditProfileOpen={isEditProfileOpen}
+        handleAddCardClick={handleAddCardClick}
+        isAddCardOpen={isAddCardOpen}
+        handleDeleteCardClick={handleDeleteCardClick}
+        isDeletePopupOpen={isDeletePopupOpen}
+        selectedCard={selectedCard}
+        handleCardClick={handleCardClick}
+        onClose={handleClosePopups}
       />
+
       <Footer />
     </div>
   );
