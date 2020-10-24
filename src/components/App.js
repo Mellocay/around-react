@@ -34,18 +34,18 @@ function App(props) {
       setIsDeletePopupOpen(false);
       setIsImagePopupOpen(false);
   }
-// set image popup state
-const [selectedLink, setSelectedLink] = React.useState('');
-const [selectedTitle, setSelectedTitle] = React.useState('');
+  // set image popup state
+  const [selectedLink, setSelectedLink] = React.useState('');
+  const [selectedTitle, setSelectedTitle] = React.useState('');
 
-// handler function for image popup
-function handleCardClick(link, title) {
-  setSelectedLink(link);
-  setSelectedTitle(title);
-  setIsImagePopupOpen(true);
-}
+  // handler function for image popup
+  function handleCardClick(link, title) {
+    setSelectedLink(link);
+    setSelectedTitle(title);
+    setIsImagePopupOpen(true);
+  }
 
-// app JSX
+  // app JSX
   return (
     <div className="root">
       <Header />
@@ -62,7 +62,7 @@ function handleCardClick(link, title) {
         selectedLink={selectedLink}
         selectedTitle={selectedTitle}
         isImagePopupOpen={isImagePopupOpen}
-        handleCardClick={(card)=>{handleCardClick(card)}}
+        handleCardClick={(link, title)=>{handleCardClick(link, title)}}
         onClose={handleClosePopups}
       />
 

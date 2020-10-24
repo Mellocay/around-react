@@ -29,7 +29,7 @@ React.useEffect(() => {
   api.getCardList().then(res => {
     setCards(res.map((card) =>({
       link: card.link,
-      title: card.name,
+      title: card.title,
       likes: card.likes
     })))
   })
@@ -72,7 +72,7 @@ React.useEffect(() => {
          
   {/* Avatar Popup JSX */}
       <PopupWithForm name="edit-avatar" title="Change Profile Picture" buttonText="Save" isOpen={props.isEditAvatarOpen} onClose={props.onClose}>
-        <input id="avatar-URL" type="url" value="" placeholder="enter avatar link here" className="popup__input popup__input_avatar-URL" name="avatarURL" required minLength="2" />
+        <input id="avatar-URL" type="url" value="" placeholder="enter avatar link here" className="popup__input popup__input_avatar-URL" name="avatarURL" required minLength="2" onChange={props.handleInput} />
         <span id="avatar-URL-error" className="popup__error popup__error_visible"></span>
       </PopupWithForm>
 
