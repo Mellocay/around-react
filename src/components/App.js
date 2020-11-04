@@ -4,8 +4,58 @@ import Main from './Main.js';
 import PopupWithForm from './PopupWithForm';
 import PopupWithImage from './PopupWithImage';
 import Footer from './Footer.js';
+import api from '../utils/Api.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-function App(props) {
+function App() {
+
+  // set states for Profile/Current User
+  const [currentUser, setCurrentUser] = React.useState({});
+
+  // Call server for Profile/User Content
+  React.useEffect(() => {
+    api.getUserInfo().then((res) => {
+      setCurrentUser(res);
+    })
+    .catch(err => console.log(err));
+  }, []);
+  
+  // set state for Cards
+  const [cards, setCards] = React.useState([]);
+  
+  React.useEffect(() => {
+    // Call server to get initial cards
+    api.getCardList().then(res => {
+      setCards(res.map((card) =>({
+        link: card.link,
+        title: card.name,
+        likes: card.likes,
+        _id: card._id,
+        owner: card.owner
+      })))
+    })
+    .catch(err => console.log(err));
+  }, []);
+
+  //control likes and unlikes
+  function handleCardLikeStatus(card) {
+    // Check one more time if this card was already liked
+    const isLiked = card.likes.some(i => i._id === currentUser._id);
+    let res;
+
+    if (isLiked === false) {
+      res = api.cardLikeAdd(card._id)
+      } else {
+      res = api.cardLikeRemove(card._id)
+    }
+    res.then((newCard) => {
+      // Create a new array based on the existing one and putting a new card into it
+      const newCards = cards.map((c) => c._id === card._id ? newCard : c)
+      // Update the state
+      setCards(newCards);
+    })
+    .catch(err => console.log(err));
+  }
 
   // set states for Popups
   const [isEditAvatarOpen, setIsEditAvatarOpen] = React.useState(false);
@@ -49,6 +99,7 @@ function handleCardClick(link, title) {
 
 // app JSX
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
       <Header />
       <Main 
@@ -58,7 +109,10 @@ function handleCardClick(link, title) {
         handleAddCardClick={handleAddCardClick}
         handleDeleteCardClick={handleDeleteCardClick}
         handleCardClick={(link, title)=>{handleCardClick(link, title)}}
+        cards={cards}
+        handleCardLikeStatus={(card) => handleCardLikeStatus(card)}
       />
+
 
   {/* Avatar Popup JSX */}
   <PopupWithForm name="edit-avatar" title="Change Profile Picture" buttonText="Save" isOpen={isEditAvatarOpen} onClose={handleClosePopups}>
@@ -74,7 +128,7 @@ function handleCardClick(link, title) {
         <span id="profile-occupation-error" className="popup__error popup__error_visible"></span>
       </PopupWithForm>
 
-  {/* Card Popup JSX */}
+  {/* AddCard Popup JSX */}
       <PopupWithForm name="add-card" title="New Place" buttonText="Create" isOpen={isAddCardOpen} onClose={handleClosePopups}>
         <input id="card-title" type="text" value="" placeholder="title" className="popup__input popup__input_title" name="name" required minLength="1" maxLength="30" />
         <span id="card-title-error" className="popup__error popup__error_visible"></span>
@@ -90,6 +144,7 @@ function handleCardClick(link, title) {
 
       <Footer />
     </div>
+    </CurrentUserContext.Provider>
   );
 }
 

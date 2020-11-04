@@ -4,6 +4,7 @@
   background-color: white;
   margin: 0 18px 21px 0;
   position: relative;
+  min-height: 361px;
 }
 
 .card__item:nth-child(3n) {

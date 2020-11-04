@@ -1,36 +1,10 @@
 import React from 'react';
-import api from '../utils/Api.js';
 import Card from './Card.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main(props) {
 
-// set states for Profile Content
-const [userAvatar, setUserAvatar] = React.useState('');
-const [userName, setUserName] = React.useState('');
-const [userDescription, setUserDescription] = React.useState('');
-
-// set state for Cards
-const [cards, setCards] = React.useState([]);
-
-// Call server for Profile Content
-React.useEffect(() => {
-  api.getUserInfo().then((res) => {
-    setUserAvatar(res.avatar);
-    setUserName(res.name);
-    setUserDescription(res.about);
-  })
-  .catch(err => console.log(err));
-  
-  // Call server to get initial cards
-  api.getCardList().then(res => {
-    setCards(res.map((card) =>({
-      link: card.link,
-      title: card.name,
-      likes: card.likes
-    })))
-  })
-  .catch(err => console.log(err));
-}, []);
+  const currentUser = React.useContext(CurrentUserContext);
 
   // JSX for Main section
   return (
@@ -38,12 +12,12 @@ React.useEffect(() => {
   {/* Profile JSX */}
       <section className="profile">
         <div className="profile__image-section">
-          <img src={userAvatar} className = "profile__image" alt={userName} />
+          <img src={currentUser.avatar} className = "profile__image" alt={currentUser.name} />
           <button className="profile__image_edit-button" onClick={props.handleEditAvatarClick}></button>
         </div>
         <div className="profile__info">
-          <h2 className="profile__name">{userName}</h2>
-          <p className="profile__occupation">{userDescription}</p>
+          <h2 className="profile__name">{currentUser.name}</h2>
+          <p className="profile__occupation">{currentUser.about}</p>
         </div>
         <button className="button button__edit" onClick={props.handleEditProfileClick} aria-label="Edit Profile"></button>
         <button className="button button__add" aria-label="Add Picture Card" onClick={props.handleAddCardClick}></button>
@@ -52,16 +26,19 @@ React.useEffect(() => {
   {/* Card JSX */}
       <section className="card">
         <ul className="card__items">
-          {cards.map((card, index, handleDeleteCardClick) => 
-              <Card 
-                key={index}
-                src={card.link}
-                title={card.title} 
-                likes={card.likes}
-                handleDeleteCardClick={props.handleDeleteCardClick}
-                handleCardClick={() => props.handleCardClick(card.link, card.title)}
-              />
-          )}
+          {props.cards.map((card, index) => {
+            return <Card 
+              key={index}
+              card={card}
+              src={card.link}
+              title={card.title} 
+              likes={card.likes}
+              _id={card._id}
+              owner={card.owner}
+              handleDeleteCardClick={props.handleDeleteCardClick}
+              handleCardClick={() => props.handleCardClick(card.link, card.title)}
+              handleCardLikeStatus={(card) => {props.handleCardLikeStatus(card)}}/>
+          })}
         </ul>
       </section>
         

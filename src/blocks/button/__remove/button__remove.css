@@ -7,4 +7,14 @@
   position: absolute;
   border: none;
   background-color: transparent;
+  border: none;
+}
+
+.button__remove_hidden {
+  visibility: hidden;
+  opacity:0;
+}
+
+.button__remove_visible {
+  visibility: visible;
 }
