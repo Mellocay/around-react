@@ -2,7 +2,6 @@ import React from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Card(props) {
-
   // subscribing to UserContext
   const currentUser = React.useContext(CurrentUserContext);
 
@@ -26,13 +25,17 @@ function Card(props) {
     props.handleCardLikeStatus(props.card);
   }
 
+function handleDeleteClick() {
+  props.handleDeleteCard(props.card);
+}
+
   return (
     <li className="card__item">
-      <button className={cardDeleteButtonClassName} onClick={props.handleDeleteCardClick}></button>
+      <button className={cardDeleteButtonClassName} onClick={handleDeleteClick}></button>
       <div className="card__image" onClick={props.handleCardClick} style={{backgroundImage: `url(${props.src})`}}>
       </div>
       <div className="card__base">
-        <h3 className="card__title">{props.title}</h3>
+        <h3 className="card__title">{props.name}</h3>
         <div className="card__likes">  
           <button className={cardLikeButtonClassName} onClick={handleLikeClick}></button>
           <p className="card__like-count">{props.likes.length}</p>

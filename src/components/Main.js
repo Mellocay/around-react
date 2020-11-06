@@ -1,11 +1,12 @@
 import React from 'react';
 import Card from './Card.js';
+import EditProfilePopup from './EditProfilePopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main(props) {
 
   const currentUser = React.useContext(CurrentUserContext);
-
+  
   // JSX for Main section
   return (
     <main className="main">
@@ -31,12 +32,13 @@ function Main(props) {
               key={index}
               card={card}
               src={card.link}
-              title={card.title} 
+              name={card.name} 
               likes={card.likes}
               _id={card._id}
               owner={card.owner}
-              handleDeleteCardClick={props.handleDeleteCardClick}
-              handleCardClick={() => props.handleCardClick(card.link, card.title)}
+              // handleDeleteCardClick={props.handleDeleteCardClick}
+              handleDeleteCard={(card) => {props.handleDeleteCard(card)}}
+              handleCardClick={() => props.handleCardClick(card.link, card.name)}
               handleCardLikeStatus={(card) => {props.handleCardLikeStatus(card)}}/>
           })}
         </ul>

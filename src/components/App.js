@@ -2,6 +2,8 @@ import React from 'react';
 import Header from './Header.js';
 import Main from './Main.js';
 import PopupWithForm from './PopupWithForm';
+import EditProfilePopup from './EditProfilePopup.js'
+import EditAvatarPopup from './EditAvatarPopup.js'
 import PopupWithImage from './PopupWithImage';
 import Footer from './Footer.js';
 import api from '../utils/Api.js';
@@ -28,7 +30,7 @@ function App() {
     api.getCardList().then(res => {
       setCards(res.map((card) =>({
         link: card.link,
-        title: card.name,
+        name: card.name,
         likes: card.likes,
         _id: card._id,
         owner: card.owner
@@ -37,9 +39,53 @@ function App() {
     .catch(err => console.log(err));
   }, []);
 
+  
+  // set states for Popups
+  const [isEditAvatarOpen, setIsEditAvatarOpen] = React.useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = React.useState(false);
+  const [isAddCardOpen, setIsAddCardOpen] = React.useState(false);
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  
+  // handler functions for Popups
+  function handleEditAvatarClick(evt) {
+    setIsEditAvatarOpen(true);
+  }
+  function handleEditProfileClick(evt) {
+    setIsEditProfileOpen(true);
+  }
+  function handleAddCardClick(evt) {
+    setIsAddCardOpen(true);
+  }
+  // function handleDeleteCardClick(evt) {
+  //   setIsDeletePopupOpen(true);
+  // }
+  
+  //close popups
+  function handleClosePopups(evt) {
+    // if(evt.target !== evt.currentTarget) return
+    setIsEditAvatarOpen(false);
+    setIsEditProfileOpen(false);
+    setIsAddCardOpen(false);
+    setIsDeletePopupOpen(false);
+    setIsImagePopupOpen(false);
+  }
+
+  // set image popup state
+  const [selectedLink, setSelectedLink] = React.useState('');
+  const [selectedName, setSelectedName] = React.useState('');
+  
+  // handler function for image popup
+  function handleCardClick(link, name) {
+    setSelectedLink(link);
+    setSelectedName(name);
+    setIsImagePopupOpen(true);
+  }
+  
   //control likes and unlikes
   function handleCardLikeStatus(card) {
     // Check one more time if this card was already liked
+    
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     let res;
 
@@ -57,47 +103,30 @@ function App() {
     .catch(err => console.log(err));
   }
 
-  // set states for Popups
-  const [isEditAvatarOpen, setIsEditAvatarOpen] = React.useState(false);
-  const [isEditProfileOpen, setIsEditProfileOpen] = React.useState(false);
-  const [isAddCardOpen, setIsAddCardOpen] = React.useState(false);
-  const [isDeletePopupOpen, setIsDeletePopupOpen] = React.useState(false);
-  const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  function handleDeleteCard(card) {
+    api.removeCard(card._id).then(() => {
+     const cardListCopy = cards.filter(c => c._id !== card._id);
+          setCards(cardListCopy);
+        })
+        .catch( err => console.log(err))
+      }
 
-  // handler functions for Popups
-  function handleEditAvatarClick(evt) {
-    setIsEditAvatarOpen(true);
-  }
-  function handleEditProfileClick(evt) {
-    setIsEditProfileOpen(true);
-  }
-  function handleAddCardClick(evt) {
-    setIsAddCardOpen(true);
-  }
-  function handleDeleteCardClick(evt) {
-    setIsDeletePopupOpen(true);
+  // update and set Profile
+  function handleUpdateProfile(userInfo) {
+    api.setUserInfo(userInfo).then (res => {setCurrentUser({...setCurrentUser, name:res.name, about:res.about})
+    })
+    .then(() => {handleClosePopups()})
+    .catch(err => console.log(err));
   }
 
-  function handleClosePopups(evt) {
-    if(evt.target !== evt.currentTarget) return
-      setIsEditAvatarOpen(false);
-      setIsEditProfileOpen(false);
-      setIsAddCardOpen(false);
-      setIsDeletePopupOpen(false);
-      setIsImagePopupOpen(false);
+  function handleUpdateAvatar(userInfo) {
+    api.setUserAvatar(userInfo).then (res => {setCurrentUser({...setCurrentUser, avatar:res.avatar})
+    })
+    .then(() => {handleClosePopups()})
+    .catch(err => console.log(err));
   }
-// set image popup state
-const [selectedLink, setSelectedLink] = React.useState('');
-const [selectedTitle, setSelectedTitle] = React.useState('');
 
-// handler function for image popup
-function handleCardClick(link, title) {
-  setSelectedLink(link);
-  setSelectedTitle(title);
-  setIsImagePopupOpen(true);
-}
-
-// app JSX
+  // app JSX
   return (
     <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
@@ -107,26 +136,17 @@ function handleCardClick(link, title) {
         handleEditAvatarClick={handleEditAvatarClick}
         handleEditProfileClick={handleEditProfileClick}
         handleAddCardClick={handleAddCardClick}
-        handleDeleteCardClick={handleDeleteCardClick}
-        handleCardClick={(link, title)=>{handleCardClick(link, title)}}
+        // handleDeleteCardClick={handleDeleteCardClick}
+        handleDeleteCard={(card) => {handleDeleteCard(card)}}
+        handleCardClick={(link, name)=>{handleCardClick(link, name)}}
         cards={cards}
         handleCardLikeStatus={(card) => handleCardLikeStatus(card)}
       />
 
-
   {/* Avatar Popup JSX */}
-  <PopupWithForm name="edit-avatar" title="Change Profile Picture" buttonText="Save" isOpen={isEditAvatarOpen} onClose={handleClosePopups}>
-        <input id="avatar-URL" type="url" value="" placeholder="enter avatar link here" className="popup__input popup__input_avatar-URL" name="avatarURL" required minLength="2" />
-        <span id="avatar-URL-error" className="popup__error popup__error_visible"></span>
-      </PopupWithForm>
+  <EditAvatarPopup isOpen={isEditAvatarOpen} onClose={handleClosePopups} handleUpdateAvatar={handleUpdateAvatar}/>
 
-  {/* Profile Popup JSX */}
-      <PopupWithForm name="edit-profile" title="Edit Profile" buttonText="Save" isOpen={isEditProfileOpen} onClose={handleClosePopups}>
-        <input id="profile-name" type="text" value="" placeholder="Name" className="popup__input popup__input_name" name="name" required minLength="2" maxLength="40" />
-        <span id="profile-name-error" className="popup__error popup__error_visible"></span>
-        <input id="profile-occupation" type="text" value="" placeholder="Occupation" className="popup__input popup__input_occupation" name="occupation" required minLength="2" maxLength="200" />
-        <span id="profile-occupation-error" className="popup__error popup__error_visible"></span>
-      </PopupWithForm>
+  <EditProfilePopup isOpen={isEditProfileOpen} onClose={handleClosePopups} handleUpdateProfile={handleUpdateProfile}/>
 
   {/* AddCard Popup JSX */}
       <PopupWithForm name="add-card" title="New Place" buttonText="Create" isOpen={isAddCardOpen} onClose={handleClosePopups}>
@@ -137,10 +157,10 @@ function handleCardClick(link, title) {
       </PopupWithForm>
 
   {/* Delete Popup JSX */}
-      <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={isDeletePopupOpen} onClose={handleClosePopups}/>
+      <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={isDeletePopupOpen} onClose={handleClosePopups} onClick={handleDeleteCard}/>
 
 {/* Image Popup JSX */}
-      <PopupWithImage link={selectedLink} title={selectedTitle} isOpen={isImagePopupOpen} onClose={handleClosePopups}/>
+      <PopupWithImage link={selectedLink} name={selectedName} isOpen={isImagePopupOpen} onClose={handleClosePopups}/>
 
       <Footer />
     </div>
