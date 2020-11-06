@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 export default function EditAvatarPopup(props) {
   const currentUser = React.useContext(CurrentUserContext);
-  const [profileAvatar, setProfileAvatar] = React.useState(currentUser.avatar);
+  const [profileAvatar, setProfileAvatar] = React.useState('');
   const avatarInput = React.useRef(profileAvatar);
 
   function handleAvatarChange() {

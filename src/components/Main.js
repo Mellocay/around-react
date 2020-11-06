@@ -1,6 +1,5 @@
 import React from 'react';
 import Card from './Card.js';
-import EditProfilePopup from './EditProfilePopup.js';
 import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
 function Main(props) {

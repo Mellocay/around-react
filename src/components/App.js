@@ -4,6 +4,7 @@ import Main from './Main.js';
 import PopupWithForm from './PopupWithForm';
 import EditProfilePopup from './EditProfilePopup.js'
 import EditAvatarPopup from './EditAvatarPopup.js'
+import AddCardPopup from './AddCardPopup.js'
 import PopupWithImage from './PopupWithImage';
 import Footer from './Footer.js';
 import api from '../utils/Api.js';
@@ -113,15 +114,22 @@ function App() {
 
   // update and set Profile
   function handleUpdateProfile(userInfo) {
-    api.setUserInfo(userInfo).then (res => {setCurrentUser({...setCurrentUser, name:res.name, about:res.about})
+    api.setUserInfo(userInfo).then (res => {setCurrentUser({...setCurrentUser, name:res.name, about:res.about, avatar:res.avatar})
     })
     .then(() => {handleClosePopups()})
     .catch(err => console.log(err));
   }
 
   function handleUpdateAvatar(userInfo) {
-    api.setUserAvatar(userInfo).then (res => {setCurrentUser({...setCurrentUser, avatar:res.avatar})
+    api.setUserAvatar(userInfo).then (res => {setCurrentUser({...setCurrentUser, avatar:res.avatar, name:res.name, about:res.about})
     })
+    .then(() => {handleClosePopups()})
+    .catch(err => console.log(err));
+  }
+
+  function handleAddNewCard(cardInfo) {
+    api.addCard(cardInfo).then (newCard => 
+      setCards([...cards, newCard]))
     .then(() => {handleClosePopups()})
     .catch(err => console.log(err));
   }
@@ -149,12 +157,7 @@ function App() {
   <EditProfilePopup isOpen={isEditProfileOpen} onClose={handleClosePopups} handleUpdateProfile={handleUpdateProfile}/>
 
   {/* AddCard Popup JSX */}
-      <PopupWithForm name="add-card" title="New Place" buttonText="Create" isOpen={isAddCardOpen} onClose={handleClosePopups}>
-        <input id="card-title" type="text" value="" placeholder="title" className="popup__input popup__input_title" name="name" required minLength="1" maxLength="30" />
-        <span id="card-title-error" className="popup__error popup__error_visible"></span>
-        <input id="card-url" type="url" value="" placeholder="image link" className="popup__input popup__input_image-link" name="link" required />
-        <span id="card-url-error" className="popup__error popup__error_visible"></span>
-      </PopupWithForm>
+  <AddCardPopup isOpen={isAddCardOpen} onClose={handleClosePopups} handleAddNewCard={handleAddNewCard} />
 
   {/* Delete Popup JSX */}
       <PopupWithForm name="delete" title="Are you sure?" buttonText="Yes" isOpen={isDeletePopupOpen} onClose={handleClosePopups} onClick={handleDeleteCard}/>
