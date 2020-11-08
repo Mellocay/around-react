@@ -120,8 +120,8 @@ function App() {
     .catch(err => console.log(err));
   }
 
-  function handleUpdateAvatar(userInfo) {
-    api.setUserAvatar(userInfo).then (res => {setCurrentUser({...setCurrentUser, avatar:res.avatar, name:res.name, about:res.about})
+  function handleUpdateAvatar(avatar) {
+    api.setUserAvatar({ avatar }).then (res => {setCurrentUser({...setCurrentUser, avatar:res.avatar, name:res.name, about:res.about})
     })
     .then(() => {handleClosePopups()})
     .catch(err => console.log(err));
