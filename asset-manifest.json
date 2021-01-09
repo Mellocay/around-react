@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/static/css/main.48bb486a.chunk.css",
-    "main.js": "/static/js/main.fafc1565.chunk.js",
-    "main.js.map": "/static/js/main.fafc1565.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.f1369426.js",
-    "runtime-main.js.map": "/static/js/runtime-main.f1369426.js.map",
-    "static/js/2.ff751c37.chunk.js": "/static/js/2.ff751c37.chunk.js",
-    "static/js/2.ff751c37.chunk.js.map": "/static/js/2.ff751c37.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.711fc74bbc39d0f29be726cfc8eada2b.js": "/precache-manifest.711fc74bbc39d0f29be726cfc8eada2b.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/main.48bb486a.chunk.css.map": "/static/css/main.48bb486a.chunk.css.map",
-    "static/js/2.ff751c37.chunk.js.LICENSE.txt": "/static/js/2.ff751c37.chunk.js.LICENSE.txt",
-    "static/media/index.css": "/static/media/trash-can.4220563a.svg",
-    "static/media/logo.svg": "/static/media/logo.8f7611ae.svg"
+    "main.css": "/around-react/static/css/main.89a52f17.chunk.css",
+    "main.js": "/around-react/static/js/main.801271e5.chunk.js",
+    "main.js.map": "/around-react/static/js/main.801271e5.chunk.js.map",
+    "runtime-main.js": "/around-react/static/js/runtime-main.a5c5d8c7.js",
+    "runtime-main.js.map": "/around-react/static/js/runtime-main.a5c5d8c7.js.map",
+    "static/js/2.ff751c37.chunk.js": "/around-react/static/js/2.ff751c37.chunk.js",
+    "static/js/2.ff751c37.chunk.js.map": "/around-react/static/js/2.ff751c37.chunk.js.map",
+    "index.html": "/around-react/index.html",
+    "precache-manifest.1452843c5b3aa40a7f1be32dc8e7e0d8.js": "/around-react/precache-manifest.1452843c5b3aa40a7f1be32dc8e7e0d8.js",
+    "service-worker.js": "/around-react/service-worker.js",
+    "static/css/main.89a52f17.chunk.css.map": "/around-react/static/css/main.89a52f17.chunk.css.map",
+    "static/js/2.ff751c37.chunk.js.LICENSE.txt": "/around-react/static/js/2.ff751c37.chunk.js.LICENSE.txt",
+    "static/media/index.css": "/around-react/static/media/trash-can.4220563a.svg",
+    "static/media/logo.svg": "/around-react/static/media/logo.8f7611ae.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.f1369426.js",
+    "static/js/runtime-main.a5c5d8c7.js",
     "static/js/2.ff751c37.chunk.js",
-    "static/css/main.48bb486a.chunk.css",
-    "static/js/main.fafc1565.chunk.js"
+    "static/css/main.89a52f17.chunk.css",
+    "static/js/main.801271e5.chunk.js"
   ]
 }
